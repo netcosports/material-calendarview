@@ -29,6 +29,8 @@ class WeekDayView extends TextView {
         }
 
         setDayOfWeek(dayOfWeek);
+
+
     }
 
     public void setWeekDayFormatter(WeekDayFormatter formatter) {
@@ -43,5 +45,14 @@ class WeekDayView extends TextView {
 
     public void setDayOfWeek(Calendar calendar) {
         setDayOfWeek(CalendarUtils.getDayOfWeek(calendar));
+    }
+
+    @Override
+    public void setTextAppearance(Context context, int resId) {
+        super.setTextAppearance(context, resId);
+        Context appContext = context.getApplicationContext();
+        if (appContext instanceof CalendarFontInterface) {
+            setTypeface(((CalendarFontInterface) appContext).getCalendarTypeface());
+        }
     }
 }

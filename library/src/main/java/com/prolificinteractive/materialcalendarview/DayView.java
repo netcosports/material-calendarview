@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Rect;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -55,6 +56,11 @@ class DayView extends CheckedTextView {
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             setTextAlignment(TEXT_ALIGNMENT_CENTER);
+        }
+
+        Context appContext = context.getApplicationContext();
+        if (appContext instanceof CalendarFontInterface) {
+            setTypeface(((CalendarFontInterface) appContext).getCalendarTypeface());
         }
 
         setDay(day);
@@ -214,6 +220,16 @@ class DayView extends CheckedTextView {
         // Reset in case it was customized previously
         else {
             setText(getLabel());
+        }
+    }
+
+
+    @Override
+    public void setTextAppearance(Context context, int resId) {
+        super.setTextAppearance(context, resId);
+        Context appContext = context.getApplicationContext();
+        if (appContext instanceof CalendarFontInterface) {
+            setTypeface(((CalendarFontInterface) appContext).getCalendarTypeface());
         }
     }
 }
