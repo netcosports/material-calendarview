@@ -24,11 +24,14 @@ class MonthPagerAdapter extends PagerAdapter {
     private final ArrayDeque<MonthView> currentViews;
 
     private final MaterialCalendarView mcv;
+    private final CalendarDay today;
+
     private TitleFormatter titleFormatter = null;
     private Integer color = null;
     private Integer dateTextAppearance = null;
     private Integer weekDayTextAppearance = null;
-    private @ShowOtherDates int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
+    @ShowOtherDates
+    private int showOtherDates = MaterialCalendarView.SHOW_DEFAULTS;
     private CalendarDay minDate = null;
     private CalendarDay maxDate = null;
     private DateRangeIndex rangeIndex;
@@ -42,6 +45,7 @@ class MonthPagerAdapter extends PagerAdapter {
 
     MonthPagerAdapter(MaterialCalendarView mcv) {
         this.mcv = mcv;
+        this.today = CalendarDay.today();
         currentViews = new ArrayDeque<>();
         currentViews.iterator();
         setRangeDates(null, null);
@@ -206,7 +210,8 @@ class MonthPagerAdapter extends PagerAdapter {
         }
     }
 
-    public @ShowOtherDates int getShowOtherDates() {
+    @ShowOtherDates
+    public int getShowOtherDates() {
         return showOtherDates;
     }
 
@@ -229,15 +234,11 @@ class MonthPagerAdapter extends PagerAdapter {
         }
 
         if (min == null) {
-            Calendar worker = CalendarUtils.getInstance();
-            worker.add(Calendar.YEAR, -200);
-            min = CalendarDay.from(worker);
+            min = CalendarDay.from(today.getYear() - 200, today.getMonth(), today.getDay());
         }
 
         if (max == null) {
-            Calendar worker = CalendarUtils.getInstance();
-            worker.add(Calendar.YEAR, 200);
-            max = CalendarDay.from(worker);
+            max = CalendarDay.from(today.getYear() + 200, today.getMonth(), today.getDay());
         }
 
         rangeIndex = new DateRangeIndex(min, max);
@@ -252,14 +253,13 @@ class MonthPagerAdapter extends PagerAdapter {
     }
 
     public void setDateSelected(CalendarDay day, boolean selected) {
-        if(selected) {
-            if(!selectedDates.contains(day)) {
+        if (selected) {
+            if (!selectedDates.contains(day)) {
                 selectedDates.add(day);
                 invalidateSelectedDates();
             }
-        }
-        else {
-            if(selectedDates.contains(day)) {
+        } else {
+            if (selectedDates.contains(day)) {
                 selectedDates.remove(day);
                 invalidateSelectedDates();
             }
@@ -289,7 +289,8 @@ class MonthPagerAdapter extends PagerAdapter {
         return rangeIndex.getItem(position);
     }
 
-    public @NonNull List<CalendarDay> getSelectedDates() {
+    @NonNull
+    public List<CalendarDay> getSelectedDates() {
         return Collections.unmodifiableList(selectedDates);
     }
 

@@ -1,14 +1,22 @@
 Change Log
 ==========
 
+Version 1.1.0 *(2015-10-19)*
+----------------------------
+
+* New: Ability to disable month swiping with `setPagingEnabled()`
+* Fix [#149](https://github.com/prolificinteractive/material-calendarview/issues/149):
+  save selected dates as a typed List instead of an array.
+* Change: Some preformance optimizations
+
 Version 1.0.1 *(2015-09-30)*
-------------------------
+----------------------------
 
 * Fix [#143](https://github.com/prolificinteractive/material-calendarview/issues/143):
  flag implementation for `showOtherDates` was a little weird and ambiguous. Clarified and added documentation.
 
 Version 1.0.0 *(2015-09-30)*
-------------------------
+----------------------------
 
 * New: Added ability to select multiple dates or disable selection completely
 * Change: `OnDateChangedListener` has become `OnDateSelectedListener` with different functionality
