@@ -157,6 +157,10 @@ public class MaterialCalendarView extends ViewGroup {
     private final MonthPagerAdapter adapter;
     private CalendarDay currentMonth;
     private LinearLayout topbar;
+    /**
+     * Used for the dynamic calendar height.
+     */
+    private boolean mDynamicHeightEnabled;
 
     private final ArrayList<DayViewDecorator> dayViewDecorators = new ArrayList<>();
 
@@ -917,6 +921,7 @@ public class MaterialCalendarView extends ViewGroup {
         setTileSize(ss.tileSizePx);
         setTopbarVisible(ss.topbarVisible);
         setSelectionMode(ss.selectionMode);
+        setDynamicHeightEnabled(ss.dynamicHeightEnabled);
     }
 
     @Override
@@ -950,6 +955,7 @@ public class MaterialCalendarView extends ViewGroup {
         int tileSizePx = -1;
         boolean topbarVisible = true;
         int selectionMode = SELECTION_MODE_SINGLE;
+        boolean dynamicHeightEnabled = false;
 
         SavedState(Parcelable superState) {
             super(superState);
@@ -969,6 +975,7 @@ public class MaterialCalendarView extends ViewGroup {
             out.writeInt(tileSizePx);
             out.writeInt(topbarVisible ? 1 : 0);
             out.writeInt(selectionMode);
+            out.writeInt(dynamicHeightEnabled ? 1 : 0);
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR
@@ -996,6 +1003,7 @@ public class MaterialCalendarView extends ViewGroup {
             tileSizePx = in.readInt();
             topbarVisible = in.readInt() == 1;
             selectionMode = in.readInt();
+            dynamicHeightEnabled = in.readInt() == 1;
         }
     }
 
@@ -1014,7 +1022,7 @@ public class MaterialCalendarView extends ViewGroup {
 
     /**
      * Sets the first day of the week.
-     * <p/>
+
      * Uses the java.util.Calendar day constants.
      *
      * @param day The first day of the week as a java.util.Calendar day constant.
@@ -1030,6 +1038,27 @@ public class MaterialCalendarView extends ViewGroup {
     public int getFirstDayOfWeek() {
         return adapter.getFirstDayOfWeek();
     }
+
+    /**
+     * By default, the calendar will take up all the space needed to show any month (6 rows).
+     * By enabling dynamic height, the view will change height dependant on the visible month.
+     *
+     * This means months that only need 5 or 4 rows to show the entire month will only take up
+     * that many rows, and will grow and shrink as necessary.
+     *
+     * @param useDynamicHeight true to have the view different heights based on the visible month
+     */
+    public void setDynamicHeightEnabled(boolean useDynamicHeight) {
+        this.mDynamicHeightEnabled = useDynamicHeight;
+    }
+
+    /**
+     * @return the dynamic height state - true if enabled.
+     */
+    public boolean isDynamicHeightEnabled() {
+        return mDynamicHeightEnabled;
+    }
+
 
     /**
      * Add a collection of day decorators
@@ -1226,13 +1255,25 @@ public class MaterialCalendarView extends ViewGroup {
         final int desiredWidth = specWidthSize - getPaddingLeft() - getPaddingRight();
         final int desiredHeight = specHeightSize - getPaddingTop() - getPaddingBottom();
 
-        final int viewTileHieght = getTopbarVisible() ?
-                (MonthView.DEFAULT_MONTH_TILE_HEIGHT + 1) :
-                MonthView.DEFAULT_MONTH_TILE_HEIGHT;
+        int weekCount = MonthView.DEFAULT_MONTH_TILE_HEIGHT;
+
+        /*
+         * The default height of the calendar component is MonthView.DEFAULT_MONTH_TILE_HEIGHT rows,
+         * but we need to hide 1 if the actual date is 5 week long
+         */
+        if (mDynamicHeightEnabled && adapter != null && pager != null) {
+            Calendar cal = (Calendar) adapter.getItem(pager.getCurrentItem()).getCalendar().clone();
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            //noinspection ResourceType
+            cal.setFirstDayOfWeek(getFirstDayOfWeek());
+            weekCount = cal.get(Calendar.WEEK_OF_MONTH) + 1; // + 1 because of the week days
+        }
+
+        final int viewTileHeight = getTopbarVisible() ? (weekCount + 1) : weekCount;
 
         //Calculate independent tile sizes for later
         int desiredTileWidth = desiredWidth / MonthView.DEFAULT_DAYS_IN_WEEK;
-        int desiredTileHeight = desiredHeight / viewTileHieght;
+        int desiredTileHeight = desiredHeight / viewTileHeight;
 
         int measureTileSize = -1;
 
@@ -1259,7 +1300,7 @@ public class MaterialCalendarView extends ViewGroup {
 
         //Calculate our size based off our measured tile size
         int measuredWidth = measureTileSize * MonthView.DEFAULT_DAYS_IN_WEEK;
-        int measuredHeight = measureTileSize * viewTileHieght;
+        int measuredHeight = measureTileSize * viewTileHeight;
 
         //Put padding back in from when we took it away
         measuredWidth += getPaddingLeft() + getPaddingRight();
