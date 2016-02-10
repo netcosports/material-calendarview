@@ -19,6 +19,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -253,8 +254,13 @@ class DayView extends CheckedTextView {
     @Override
     public void setTextAppearance(Context context, int resId) {
         super.setTextAppearance(context, resId);
-        Context appContext = context.getApplicationContext();
+        Context appContext = getContext().getApplicationContext();
         if (appContext instanceof CalendarFontInterface) {
+            int textSize = ((CalendarFontInterface) appContext).getTextSize();
+            if (textSize > 0 ) {
+                Log.i("zzz", "textSize: " + textSize);
+                setTextSize(textSize);
+            }
             setTypeface(((CalendarFontInterface) appContext).getCalendarTypeface());
         }
     }
