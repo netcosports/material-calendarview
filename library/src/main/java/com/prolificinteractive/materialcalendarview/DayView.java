@@ -256,11 +256,6 @@ class DayView extends CheckedTextView {
         super.setTextAppearance(context, resId);
         Context appContext = getContext().getApplicationContext();
         if (appContext instanceof CalendarFontInterface) {
-            int textSize = ((CalendarFontInterface) appContext).getTextSize();
-            if (textSize > 0 ) {
-                Log.i("zzz", "textSize: " + textSize);
-                setTextSize(textSize);
-            }
             setTypeface(((CalendarFontInterface) appContext).getCalendarTypeface());
         }
     }
