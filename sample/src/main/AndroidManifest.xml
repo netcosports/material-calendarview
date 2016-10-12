@@ -166,6 +166,24 @@
         </activity>
 
         <activity
+            android:name=".CustomTileDimensions"
+            android:label="@string/title_activity_custom_tile_size"
+            android:parentActivityName="com.prolificinteractive.materialcalendarview.sample.MainActivity"
+            >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"
+                />
+
+            <intent-filter>
+                <action android:name="android.intent.action.RUN" />
+                <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
             android:name="com.prolificinteractive.materialcalendarview.sample.DialogsActivity"
             android:label="@string/title_activity_dialogs"
             android:parentActivityName="com.prolificinteractive.materialcalendarview.sample.MainActivity"
@@ -181,6 +199,40 @@
                 <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
             </intent-filter>
 
+        </activity>
+
+        <activity
+            android:name="com.prolificinteractive.materialcalendarview.sample.MultipleViewActivity"
+            android:label="@string/title_activity_multiple_view"
+            android:parentActivityName="com.prolificinteractive.materialcalendarview.sample.MainActivity"
+            >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"
+                />
+
+            <intent-filter>
+                <action android:name="android.intent.action.RUN" />
+                <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.prolificinteractive.materialcalendarview.sample.MultipleSizeActivity"
+            android:label="@string/title_activity_multiple_size"
+            android:parentActivityName="com.prolificinteractive.materialcalendarview.sample.MainActivity"
+            >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.prolificinteractive.materialcalendarview.sample.MainActivity"
+                />
+
+            <intent-filter>
+                <action android:name="android.intent.action.RUN" />
+                <category android:name="com.prolificinteractive.materialcalendarview.sample.SAMPLE" />
+            </intent-filter>
         </activity>
 
     </application>
