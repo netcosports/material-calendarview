@@ -4,14 +4,15 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
@@ -34,7 +35,8 @@ import static com.prolificinteractive.materialcalendarview.MaterialCalendarView.
  */
 @SuppressLint("ViewConstructor")
 class DayView extends CheckedTextView {
-
+    private static final int DAY_VIEW_WIDTH = 108;
+    private static final int DAY_VIEW_HEIGHT = 108;
     private CalendarDay date;
     private int selectionColor = Color.GRAY;
 
@@ -181,7 +183,7 @@ class DayView extends CheckedTextView {
         super.onDraw(canvas);
     }
 
-    private void regenerateBackground() {
+    public void regenerateBackground() {
         if (selectionDrawable != null) {
             setBackgroundDrawable(selectionDrawable);
         } else {
@@ -190,31 +192,53 @@ class DayView extends CheckedTextView {
         }
     }
 
-    private static Drawable generateBackground(int color, int fadeTime, Rect bounds) {
+    public void generateBackground() {
+        setBackgroundDrawable(generateBackground(selectionColor, fadeTime, tempRect));
+    }
+
+    private Drawable generateBackground(int color, int fadeTime, Rect bounds) {
         StateListDrawable drawable = new StateListDrawable();
         drawable.setExitFadeDuration(fadeTime);
-        drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color));
+        int width = getWidth();
+        int height = getHeight();
+        if (width <= 0 || height <= 0) {
+            width = DAY_VIEW_WIDTH;
+            height = DAY_VIEW_HEIGHT;
+        }
+
+        drawable.addState(new int[]{android.R.attr.state_checked}, generateCircleDrawable(color, width, height));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             drawable.addState(new int[]{android.R.attr.state_pressed}, generateRippleDrawable(color, bounds));
         } else {
-            drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleDrawable(color));
+            drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleDrawable(color, width, height));
         }
 
-        drawable.addState(new int[]{}, generateCircleDrawable(Color.TRANSPARENT));
+        drawable.addState(new int[]{}, generateRippleDrawable(Color.TRANSPARENT, bounds));
 
         return drawable;
     }
 
-    private static Drawable generateCircleDrawable(final int color) {
-        ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
-        drawable.getPaint().setColor(color);
+    private Drawable generateCircleDrawable(final int color, int width, int height) {
+        Bitmap dstBitmap = Bitmap.createBitmap(
+                width, height,
+                Bitmap.Config.ARGB_8888
+        );
+        Canvas canvas = new Canvas(dstBitmap);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(color);
+        canvas.drawCircle(width / 2, height / 2, height / 2, paint);
+        Drawable drawable = new BitmapDrawable(dstBitmap);
+
+        /*ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
+        drawable.getPaint().setColor(color);*/
         return drawable;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static Drawable generateRippleDrawable(final int color, Rect bounds) {
+    private Drawable generateRippleDrawable(final int color, Rect bounds) {
         ColorStateList list = ColorStateList.valueOf(color);
-        Drawable mask = generateCircleDrawable(Color.WHITE);
+        Drawable mask = generateCircleDrawable(Color.WHITE, DAY_VIEW_WIDTH, DAY_VIEW_HEIGHT);
         RippleDrawable rippleDrawable = new RippleDrawable(list, null, mask);
 //        API 21
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
