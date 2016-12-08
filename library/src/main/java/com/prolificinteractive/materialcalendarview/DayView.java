@@ -213,7 +213,11 @@ class DayView extends CheckedTextView {
             drawable.addState(new int[]{android.R.attr.state_pressed}, generateCircleDrawable(color, width, height));
         }
 
-        drawable.addState(new int[]{}, generateCircleDrawable(Color.TRANSPARENT, width, height));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawable.addState(new int[]{}, generateRippleDrawable(Color.TRANSPARENT, bounds));
+        } else {
+            drawable.addState(new int[]{}, generateCircleDrawable(Color.TRANSPARENT, width, height));
+        }
 
         return drawable;
     }
