@@ -13,7 +13,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.0-beta4'
         classpath 'com.github.dcendents:android-maven-plugin:1.2'
     }
 }
@@ -35,7 +35,7 @@ allprojects {
         }
     }
     // Is Release Build?
-    ext.isReleaseVersion = has("release")
+    ext.isReleaseVersion = hasProperty("release")
     ext.versionCodeInt = getProperty('VERSION_CODE').toInteger()
     version = VERSION_NAME
 }

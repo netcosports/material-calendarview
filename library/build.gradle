@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'maven-publish'
 
-
 buildscript {
     repositories {
 
@@ -19,9 +18,19 @@ buildscript {
     }
     dependencies {
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.12"
+
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
+dependencies {
+    compile 'com.android.support:support-v4:25.1.1'
+
+    testCompile 'junit:junit:4.12'
+}
 
 def getCustomVersionCode() {
     def buildNumber = System.getenv("BUILD_NUMBER");
