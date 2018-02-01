@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ArrayRes;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -752,6 +753,13 @@ public class MaterialCalendarView extends ViewGroup {
     }
 
     /**
+     * @param color The color.
+     */
+    public void setWeekDayTextBackgroundColor(@ColorInt int color) {
+        adapter.setWeekDayTextBackgroundColor(color);
+    }
+
+    /**
      * @param resourceId The text appearance resource id.
      */
     public void setWeekDayTextAppearance(int resourceId) {
@@ -1053,6 +1061,10 @@ public class MaterialCalendarView extends ViewGroup {
     public void setTopbarVisible(boolean visible) {
         topbar.setVisibility(visible ? View.VISIBLE : View.GONE);
         requestLayout();
+    }
+
+    public void setTopbarBackgroundColor(@ColorInt int color){
+        topbar.setBackgroundColor(color);
     }
 
     /**
