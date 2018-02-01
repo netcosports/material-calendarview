@@ -3,6 +3,7 @@ package com.prolificinteractive.materialcalendarview.sample;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
@@ -14,7 +15,7 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -24,10 +25,10 @@ public class BasicActivity extends AppCompatActivity implements OnDateSelectedLi
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
-    @Bind(R.id.calendarView)
+    @BindView(R.id.calendarView)
     MaterialCalendarView widget;
 
-    @Bind(R.id.textView)
+    @BindView(R.id.textView)
     TextView textView;
 
     @Override
@@ -38,6 +39,11 @@ public class BasicActivity extends AppCompatActivity implements OnDateSelectedLi
 
         widget.setOnDateChangedListener(this);
         widget.setOnMonthChangedListener(this);
+
+        int color = ContextCompat.getColor(getApplicationContext(), R.color.sample_accent);
+        widget.setTopbarBackgroundColor(color);
+        widget.setWeekDayTextBackgroundColor(color);
+
 
         //Setup initial text
         textView.setText(getSelectedDatesString());
