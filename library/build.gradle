@@ -45,7 +45,7 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:support-v4:${project.SUPPORT_LIBRARY_VERSION}"
+    compile 'androidx.legacy:legacy-support-v4:1.0.0'
 }
 
 
