@@ -265,6 +265,11 @@ public class MaterialCalendarView extends ViewGroup {
         buttonPast.setOnClickListener(onClickListener);
         buttonFuture.setOnClickListener(onClickListener);
 
+        if (getContext().getApplicationContext() instanceof CalendarFontInterface) {
+            CalendarFontInterface font = (CalendarFontInterface) getContext().getApplicationContext();
+            title.setTypeface(font.getMonthNameFont());
+        }
+
         titleChanger = new TitleChanger(title);
         titleChanger.setTitleFormatter(DEFAULT_TITLE_FORMATTER);
 
