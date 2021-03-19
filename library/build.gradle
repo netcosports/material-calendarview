@@ -18,7 +18,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.12"
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.21.0"
     }
 }
 
@@ -45,7 +45,7 @@ android {
 }
 
 dependencies {
-    compile 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }
 
 

@@ -53,7 +53,7 @@ class WeekDayView extends TextView {
         super.setTextAppearance(context, resId);
         Context appContext = context.getApplicationContext();
         if (appContext instanceof CalendarFontInterface) {
-            setTypeface(((CalendarFontInterface) appContext).getCalendarTypeface());
+            setTypeface(((CalendarFontInterface) appContext).getWeekFont());
         }
     }
 }

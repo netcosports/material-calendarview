@@ -584,6 +584,10 @@ public class MaterialCalendarView extends ViewGroup {
         requestLayout();
     }
 
+    public TextView getTitle() {
+        return title;
+    }
+
     /**
      * @param tileWidthDp the new width for each tile in dips
      * @see #setTileWidth(int)

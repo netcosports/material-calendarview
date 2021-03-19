@@ -279,4 +279,13 @@ class DayView extends CheckedTextView {
             circleDrawableRect.set(0, circleOffset, width, radius + circleOffset);
         }
     }
+
+    @Override
+    public void setTextAppearance(Context context, int resId) {
+        super.setTextAppearance(context, resId);
+        Context appContext = context.getApplicationContext();
+        if (appContext instanceof CalendarFontInterface) {
+            setTypeface(((CalendarFontInterface) appContext).getDayFont());
+        }
+    }
 }
