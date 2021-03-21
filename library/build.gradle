@@ -26,20 +26,20 @@ buildscript {
 def getCustomVersionCode() {
     def buildNumber = System.getenv("BUILD_NUMBER");
     if (buildNumber != null) {
-        return buildNumber.toInteger()
+        return buildNumber.toInteger() - 13
     }
     return 0
 }
 
 def packageName = 'com.netcosports.calendars'
-def libraryVersion = "1.0.${getCustomVersionCode()}"
+def libraryVersion = "1.1.${getCustomVersionCode()}"
 
 android {
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion ANDROID_BUILD_MIN_SDK_VERSION
         targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
     }
 }
@@ -50,7 +50,7 @@ dependencies {
 
 
 task androidSourcesJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier.set('sources')
     from android.sourceSets.main.java.srcDirs
 }
 

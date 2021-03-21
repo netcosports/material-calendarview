@@ -27,6 +27,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.prolificinteractive.materialcalendarview.font.CalendarFontInterface;
+import com.prolificinteractive.materialcalendarview.font.FontDecorator;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
@@ -264,11 +266,6 @@ public class MaterialCalendarView extends ViewGroup {
 
         buttonPast.setOnClickListener(onClickListener);
         buttonFuture.setOnClickListener(onClickListener);
-
-        if (getContext().getApplicationContext() instanceof CalendarFontInterface) {
-            CalendarFontInterface font = (CalendarFontInterface) getContext().getApplicationContext();
-            title.setTypeface(font.getMonthNameFont());
-        }
 
         titleChanger = new TitleChanger(title);
         titleChanger.setTitleFormatter(DEFAULT_TITLE_FORMATTER);
@@ -752,6 +749,12 @@ public class MaterialCalendarView extends ViewGroup {
      */
     public void setHeaderTextAppearance(int resourceId) {
         title.setTextAppearance(getContext(), resourceId);
+        if (getContext().getApplicationContext() instanceof CalendarFontInterface) {
+            FontDecorator font = ((CalendarFontInterface) getContext().getApplicationContext()).getFontDecorator();
+            if (font != null) {
+                title.setTypeface(font.getMonthFont());
+            }
+        }
     }
 
     /**

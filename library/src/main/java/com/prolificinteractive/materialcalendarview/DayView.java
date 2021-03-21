@@ -21,6 +21,8 @@ import android.view.View;
 import android.widget.CheckedTextView;
 
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView.ShowOtherDates;
+import com.prolificinteractive.materialcalendarview.font.CalendarFontInterface;
+import com.prolificinteractive.materialcalendarview.font.FontDecorator;
 import com.prolificinteractive.materialcalendarview.format.DayFormatter;
 
 import java.util.List;
@@ -283,9 +285,11 @@ class DayView extends CheckedTextView {
     @Override
     public void setTextAppearance(Context context, int resId) {
         super.setTextAppearance(context, resId);
-        Context appContext = context.getApplicationContext();
-        if (appContext instanceof CalendarFontInterface) {
-            setTypeface(((CalendarFontInterface) appContext).getDayFont());
+        if (getContext().getApplicationContext() instanceof CalendarFontInterface) {
+            FontDecorator font = ((CalendarFontInterface) getContext().getApplicationContext()).getFontDecorator();
+            if (font != null) {
+                setTypeface(font.getDayFont());
+            }
         }
     }
 }

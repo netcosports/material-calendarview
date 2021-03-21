@@ -6,6 +6,8 @@ import android.os.Build;
 import android.view.Gravity;
 import android.widget.TextView;
 
+import com.prolificinteractive.materialcalendarview.font.CalendarFontInterface;
+import com.prolificinteractive.materialcalendarview.font.FontDecorator;
 import com.prolificinteractive.materialcalendarview.format.WeekDayFormatter;
 
 import java.util.Calendar;
@@ -51,9 +53,12 @@ class WeekDayView extends TextView {
     @Override
     public void setTextAppearance(Context context, int resId) {
         super.setTextAppearance(context, resId);
-        Context appContext = context.getApplicationContext();
-        if (appContext instanceof CalendarFontInterface) {
-            setTypeface(((CalendarFontInterface) appContext).getWeekFont());
+
+        if (getContext().getApplicationContext() instanceof CalendarFontInterface) {
+            FontDecorator font = ((CalendarFontInterface) getContext().getApplicationContext()).getFontDecorator();
+            if (font != null) {
+                setTypeface(font.getDayWeekFont());
+            }
         }
     }
 }
